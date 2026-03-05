@@ -1,65 +1,71 @@
 name: Autograding Tests
-'on':
-- workflow_dispatch
-- repository_dispatch
+
+on:
+  - workflow_dispatch
+  - repository_dispatch
+
 permissions:
   checks: write
   actions: read
   contents: read
+
+env:
+  SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL: "true"  # optional safety
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Q1
-      id: q1
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Q1
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
-          pandas
-        command: 'pytest test_AIstats_lab.py::test_q1_gradient_descent_linreg_basic '
-        timeout: 10
-        max-score: 25
-    - name: Q2
-      id: q2
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Q2
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
-          pandas
-        command: pytest test_AIstats_lab.py::test_q2_diabetes_gd_reasonable_metrics
-        timeout: 10
-        max-score: 25
-    - name: Q3
-      id: q3
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Q3
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
-          pandas
-        command: pytest test_AIstats_lab.py::test_q3_diabetes_analytical_reasonable_metrics
-        timeout: 10
-        max-score: 25
-    - name: Q4
-      id: q4
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Q4
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
-          pandas
-        command: pytest test_AIstats_lab.py::test_q4_compare_gd_vs_analytical_close
-          sklearn
-        timeout: 10
-        max-score: 25
-    - name: Autograding Reporter
-      uses: classroom-resources/autograding-grading-reporter@v1
-      env:
-        Q1_RESULTS: "${{steps.q1.outputs.result}}"
-        Q2_RESULTS: "${{steps.q2.outputs.result}}"
-        Q3_RESULTS: "${{steps.q3.outputs.result}}"
-        Q4_RESULTS: "${{steps.q4.outputs.result}}"
-      with:
-        runners: q1,q2,q3,q4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Q1
+        id: q1
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Q1
+          setup-command: pip install numpy scipy scikit-learn matplotlib pytest pandas
+          command: pytest test_AIstats_lab.py::test_q1_gradient_descent_linreg_basic
+          timeout: 10
+          max-score: 25
+
+      - name: Q2
+        id: q2
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Q2
+          setup-command: pip install numpy scipy scikit-learn matplotlib pytest pandas
+          command: pytest test_AIstats_lab.py::test_q2_diabetes_gd_reasonable_metrics
+          timeout: 10
+          max-score: 25
+
+      - name: Q3
+        id: q3
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Q3
+          setup-command: pip install numpy scipy scikit-learn matplotlib pytest pandas
+          command: pytest test_AIstats_lab.py::test_q3_diabetes_analytical_reasonable_metrics
+          timeout: 10
+          max-score: 25
+
+      - name: Q4
+        id: q4
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Q4
+          setup-command: pip install numpy scipy scikit-learn matplotlib pytest pandas
+          command: pytest test_AIstats_lab.py::test_q4_compare_gd_vs_analytical_close
+          timeout: 10
+          max-score: 25
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          Q1_RESULTS: "${{steps.q1.outputs.result}}"
+          Q2_RESULTS: "${{steps.q2.outputs.result}}"
+          Q3_RESULTS: "${{steps.q3.outputs.result}}"
+          Q4_RESULTS: "${{steps.q4.outputs.result}}"
+        with:
+          runners: q1,q2,q3,q4
