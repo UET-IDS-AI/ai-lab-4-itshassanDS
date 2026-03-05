@@ -18,7 +18,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Q1
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest
+        setup-command: 'pip install numpy scipy scikit-learn matplotlib pytest sklearn '
         command: pytest test_AIstats_lab.py::test_q1_gradient_descent_linreg_basic
         timeout: 10
         max-score: 25
@@ -27,7 +27,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Q2
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest
+        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
         command: pytest test_AIstats_lab.py::test_q2_diabetes_gd_reasonable_metrics
         timeout: 10
         max-score: 25
@@ -36,7 +36,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Q3
-        setup-command: pip install numpy scipy scikit-learn matplotlib pytest
+        setup-command: pip install numpy scipy scikit-learn matplotlib pytest sklearn
         command: pytest test_AIstats_lab.py::test_q3_diabetes_analytical_reasonable_metrics
         timeout: 10
         max-score: 25
@@ -47,6 +47,7 @@ jobs:
         test-name: Q4
         setup-command: pip install numpy scipy scikit-learn matplotlib pytest
         command: pytest test_AIstats_lab.py::test_q4_compare_gd_vs_analytical_close
+          sklearn
         timeout: 10
         max-score: 25
     - name: Autograding Reporter
